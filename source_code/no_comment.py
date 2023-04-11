@@ -26,7 +26,6 @@ def no_block_comment(line:str, prefix:str, profix:str)->str:
         line_list = list(line)
         pre_index = line.find(prefix)
         pro_index = line.find(profix)
-    print(pro_index)
     return line
 
 def read_file(file_path):
@@ -47,8 +46,13 @@ def write_file(file_path, line):
 
 if __name__ == "__main__":
     file_path = input()
-    file_info = read_file(file_path)
-    method = file_info['format']
+    if ' ' in file_path:
+        method = file_path.split(' ')[-1]
+        file_path = file_path.split(' ')[0]
+        file_info = read_file(file_path)
+    else:
+        file_info = read_file(file_path)
+        method = file_info['format']
     while(1):
         if method == 'c':
             file_info['line'] = no_block_comment(file_info['line'], '/*', '*/')
@@ -59,6 +63,15 @@ if __name__ == "__main__":
             file_info['line'] = no_block_comment(file_info['line'], "'''", "'''")
             file_info['line'] = no_one_line_comment(file_info['line'], '#')
             break
+        elif method == 'custom':
+            print("Please enter block prefix", end='')
+            prefix = input()
+            print("Please enter block profix", end='')
+            profix = input()
+            file_info['line'] = no_block_comment(file_info['line'], prefix, profix)
+            print("Please enter one line prefix", end='')
+            prefix = input()
+            file_info['line'] = no_one_line_comment(file_info['line'], prefix)
         else:
             print("Which no comment method do you prefer?(c, py)", end='')
             method = input()
