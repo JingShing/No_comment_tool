@@ -1,34 +1,32 @@
-def no_c_comment(line):
-    last_char = ''
-    flag = False
-    line = list(line)
-    for index in range(len(line)):
-        char = line[index]
-        if char == '\n':
-            flag = False
-        if flag:
-            line[index] = ''
-        if char == '/' and last_char == '/':
-            line[index] = ''
-            line[index-1] = ''
-            flag = True
-        last_char = char
-    line = "".join(line)
+def no_one_line_comment(line:str, prefix:str)->str:
+    line_list = list(line)
+    line_index = line.find(prefix)
+    while line_index!=-1:
+        while line_list[line_index] != '\n':
+            line_list[line_index] = ''
+            line_index += 1
+            if line_index==len(line_list): # if in the last line has comment need to use this to avoid out of index
+                break
+        line = "".join(line_list)
+        line_list = list(line)
+        line_index = line.find(prefix)
     return line
 
-def no_python_comment(line):
-    flag = False
-    line = list(line)
-    for index in range(len(line)):
-        char = line[index]
-        if char == '\n':
-            flag = False
-        if flag:
-            line[index] = ''
-        if char == '#':
-            line[index] = ''
-            flag = True
-    line = "".join(line)
+def no_block_comment(line:str, prefix:str, profix:str)->str:
+    line_list = list(line)
+    pre_index = line.find(prefix)
+    pro_index = line.find(profix)
+    while pre_index!=-1 and pro_index!=-1:
+        while pre_index < pro_index+len(profix):
+            line_list[pre_index] = ''
+            pre_index += 1
+            if pre_index==len(line_list):
+                break
+        line = "".join(line_list)
+        line_list = list(line)
+        pre_index = line.find(prefix)
+        pro_index = line.find(profix)
+    print(pro_index)
     return line
 
 def read_file(file_path):
@@ -53,10 +51,13 @@ if __name__ == "__main__":
     method = file_info['format']
     while(1):
         if method == 'c':
-            file_info['line'] = no_c_comment(file_info['line'])
+            file_info['line'] = no_block_comment(file_info['line'], '/*', '*/')
+            file_info['line'] = no_one_line_comment(file_info['line'], '//')
             break
         elif method == 'py':
-            file_info['line'] = no_python_comment(file_info['line'])
+            file_info['line'] = no_block_comment(file_info['line'], '"""', '"""')
+            file_info['line'] = no_block_comment(file_info['line'], "'''", "'''")
+            file_info['line'] = no_one_line_comment(file_info['line'], '#')
             break
         else:
             print("Which no comment method do you prefer?(c, py)", end='')
@@ -64,4 +65,3 @@ if __name__ == "__main__":
 
     output_file = 'no_comment_' + file_info['name'] + '.txt'
     write_file(output_file, file_info['line'])
-    
