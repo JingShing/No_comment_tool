@@ -3,7 +3,7 @@ This tool can help you to get rid of code comment
 
 ## How to use
 Argument: ```file_path method``` 
-* file_path is a path to your file
+* ```file_path``` is a path to your file
 * method can be: ```c```, ```py``` or ```custom```
 * if choose custom you need to input the block comment prefix, profix and one line comment prefix
 
