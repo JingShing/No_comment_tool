@@ -14,5 +14,5 @@ After processing codes. It will generate a new file with ```no_comment_``` prefi
 * can only read ```.c``` and ```.py``` file format
 
 ### up to do
-[ ] block comment
-[ ] more language comment no no
+- [ ] block comment
+- [ ] more language comment no no
