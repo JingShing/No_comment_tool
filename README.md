@@ -12,7 +12,10 @@ After processing codes. It will generate a new file with ```no_comment_``` prefi
 ### Ver 0.1
 * Only can accept one line commeand in c and python
 * can only read ```.c``` and ```.py``` file format
+### Ver 0.2
+* Add block comment function
+* now has one line comment function and block comment function to kill comment
 
 ### up to do
-- [ ] block comment
+- [X] block comment
 - [ ] more language comment no no
